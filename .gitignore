@@ -1,4 +1,4 @@
 .idea
-oc_env
-lib
-local-dev-machines
+/oc_env
+/lib
+/local-dev-machines

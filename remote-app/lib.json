@@ -1,0 +1,7 @@
+{
+  "name": "remote-app",
+  "entryPoint": "remote-app.lua",
+  "files": [
+    "remote-app.lua"
+  ]
+}

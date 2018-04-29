@@ -1,0 +1,10 @@
+{
+  "name": "slack",
+  "entryPoint": "slack",
+  "files": [
+    "slack.lua"
+  ],
+  "dependencies": {
+    "json": "file@github#IgorTimofeev:OpenComputers:master:lib/json.lua"
+  }
+}
