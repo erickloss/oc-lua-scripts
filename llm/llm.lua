@@ -265,6 +265,11 @@ function llm:install()
     print("done")
 end
 
+function llm:clean()
+    print("cleaning up llm lib dir ...")
+    os.execute("rm -rf " .. env.LIB_ROOT_DIR)
+end
+
 -----------------------   factory -----------------------
 function llm:new()
     local new = {}

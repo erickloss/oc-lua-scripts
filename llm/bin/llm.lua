@@ -1,6 +1,11 @@
 local llm = require("llm")
 
 local args = { ... }
-if args[1] == "install" then
-    llm:install()
+
+for _, commandToRun in pairs(args) do
+    if commandToRun == "install" then
+        llm:install()
+    elseif commandToRun == "clean" then
+        llm:clean()
+    end
 end
