@@ -1,5 +1,5 @@
 local llm = require("llm")
-local json = llm.require("json")
+local json = llm:require("json")
 
 local component = require("component")
 local internet = component.internet
