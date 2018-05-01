@@ -163,7 +163,6 @@ local remoteAppApi = {
         local toTunnelSender = _createTunnelSender(tunnel)
         local callbackIdKey = proxyId .. "_remoteCallbackID"
         local remoteCallback = function(event, localAddress, remoteAddress, _port, distance, commandName, ...)
-            print("command: " .. commandName .. ", remoteAddress: " .. remoteAddress)
             -- outgoing command forwarding (from modem to tunnel)
             if remoteAddress == modemAddress and _port == port then
                 print(string.format("forward command from modem to tunnel: '%s'", commandName))
@@ -178,10 +177,12 @@ local remoteAppApi = {
         return {
             start = function()
                 if not isStarted(callbackIdKey) then
+                    modem.open(port)
                     _startRemoteAccess(callbackIdKey, remoteCallback)
                 end
             end,
             stop = function()
+                modem.close(port)
                 _stopRemoteAccess(callbackIdKey)
             end
         }
