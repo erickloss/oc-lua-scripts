@@ -157,6 +157,33 @@ local remoteAppApi = {
         local remote = _createRemote(string.format("%s_proxy", remote.remoteId), clientAddress, {}, proxyListener, sender, _onStop)
         modem.open(port)
         return remote
+    end,
+    createSimpleTunnelToModemProxy = function(proxyId, tunnelAddress, tunnel, modemAddress, modem, port, broadcastMode)
+        local toModemSender = broadcastMode == true and _createModemBroadcaster(modem, port) or _createModemSender(modem, port, modemAddress)
+        local toTunnelSender = _createTunnelSender(tunnel)
+        local callbackIdKey = proxyId .. "_remoteCallbackID"
+        local remoteCallback = function(event, localAddress, remoteAddress, _port, distance, commandName, ...)
+            -- outgoing command forwarding (from modem to tunnel)
+            if remoteAddress == modemAddress and _port == port then
+                print(string.format("forward command from modem to tunnel: '%s'", commandName))
+                toTunnelSender(commandName, ...)
+            end
+            -- incoming command forwarding (from tunnel to modem)
+            if remoteAddress == tunnelAddress then
+                print(string.format("forward command from tunnel to modem: '%s'", commandName))
+                toModemSender(commandName, ...)
+            end
+        end
+        return {
+            start = function()
+                if not isStarted(callbackIdKey) then
+                    _startRemoteAccess(callbackIdKey, remoteCallback)
+                end
+            end,
+            stop = function()
+                _stopRemoteAccess(callbackIdKey)
+            end
+        }
     end
 }
 
