@@ -59,6 +59,9 @@ local function _createRemote(remoteId, remoteAddress, commands, remoteCallback, 
         isStarted = isStarted,
         getRemoteCallback = function() return os.getenv(callbackIdKey) end,
         send = function(...) sender(...) end,
+        ping = function(...)
+            sender("ping", ...)
+        end,
         stop = function()
             if type(onStop) == "function" then
                 onStop()
@@ -163,6 +166,20 @@ local remoteAppApi = {
         local toTunnelSender = _createTunnelSender(tunnel)
         local callbackIdKey = proxyId .. "_remoteCallbackID"
         local remoteCallback = function(event, localAddress, remoteAddress, _port, distance, commandName, ...)
+            if commandName == "ping" then
+                local pingArgs = { ... }
+                if pingArgs[1] ~= "remote" then
+                    if remoteAddress == modemAddress and _port == port then
+                        print("responding ping from modem")
+                        toModemSender("ping")
+                    end
+                    if remoteAddress == tunnelAddress then
+                        print("responding ping from tunnel")
+                        toModemSender("ping")
+                    end
+                    return
+                end
+            end
             -- outgoing command forwarding (from modem to tunnel)
             if remoteAddress == modemAddress and _port == port then
                 print(string.format("forward command from modem to tunnel: '%s'", commandName))
