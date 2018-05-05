@@ -69,9 +69,9 @@ local function _createRemote(remoteId, remoteAddress, commands, remoteCallback, 
 
     for commandName, command in pairs(commands) do
         if type(command) == "function" then
-            remote[commandName] = function(...) command(sender, ...) end
+            remote[commandName] = function(...) return command(sender, ...) end
         else
-            remote[commandName] = function(...) sender(command, ...) end
+            remote[commandName] = function(...) return sender(command, ...) end
         end
     end
 
@@ -82,7 +82,7 @@ local function _createTunnelSender(tunnel)
     return function(...)
         --print("sending to tunnel ...")
         --for a, b in pairs({ ... }) do print(b) end
-        tunnel.send(...)
+        return tunnel.send(...)
     end
 end
 
@@ -90,7 +90,7 @@ local function _createModemBroadcaster(modem, port)
     return function(...)
         --print("broadcasting via modem ...")
         --for a, b in pairs({ ... }) do print(b) end
-        modem.broadcast(port, ...)
+        return modem.broadcast(port, ...)
     end
 end
 
@@ -98,7 +98,7 @@ local function _createModemSender(modem, port, remoteAddress)
     return function(...)
         --print("sending to modem ...")
         --for a, b in pairs({ ... }) do print(b) end
-        modem.send(remoteAddress, port, ...)
+        return modem.send(remoteAddress, port, ...)
     end
 end
 
@@ -166,12 +166,16 @@ local remoteAppApi = {
             -- outgoing command forwarding (from modem to tunnel)
             if remoteAddress == modemAddress and _port == port then
                 print(string.format("forward command from modem to tunnel: '%s'", commandName))
-                toTunnelSender(commandName, ...)
+                if not toTunnelSender(commandName, ...) then
+                    toModemSender("proxyError", string.format("Could not send command %s to tunnel", commandName))
+                end
             end
             -- incoming command forwarding (from tunnel to modem)
             if remoteAddress == tunnelAddress then
                 print(string.format("forward command from tunnel to modem: '%s'", commandName))
-                toModemSender(commandName, ...)
+                if not toModemSender(commandName, ...) then
+                    toTunnelSender("proxyError", string.format("Could not send command %s to modem", commandName))
+                end
             end
         end
         return {
