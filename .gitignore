@@ -2,3 +2,5 @@
 /oc_env
 /lib
 /local-dev-machines
+!/local-dev-machines/**/home
+/local-dev-machines/**/home/.llm

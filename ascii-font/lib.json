@@ -1,0 +1,9 @@
+{
+    "name": "ascii-font",
+    "entryPoint": "ascii-font",
+    "files": [
+        "ascii-font.lua",
+        "fonts/ansi-shadow.lua",
+        "fonts/calvin-s.lua"
+    ]
+}
