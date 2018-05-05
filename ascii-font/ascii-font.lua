@@ -30,11 +30,11 @@ end
 
 function AsciiFont:print(text, fontName)
     if not self.initialized then
-        return "ERROR: font API not initialized"
+        return "ERROR: font API not initialized", 30, 1
     end
-    local font = fontName ~= nil and self.fonts[fontName] or self.fonts.default
+    local font = fontName ~= nil and self.fonts[fontName] or self.fonts[self.defaultFont]
     if font == nil then
-        return "ERROR: font " .. fontName .. " not found"
+        return "ERROR: font " .. fontName .. " not found", 50, 1
     end
     local height = font.height
     local width = 0
