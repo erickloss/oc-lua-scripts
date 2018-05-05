@@ -20,8 +20,10 @@ function AsciiFont:initialize(customFonts)
     self.fonts[FONT_CALVIN_S] = llm:requireLocal("fonts/calvin-s")
     self.fonts[FONT_ANSI_SHADOW] = llm:requireLocal("fonts/ansi-shadow")
     -- custom fonts
-    for fontName, font in pairs(customFonts) do
-        self.fonts[fontName] = font
+    if customFonts ~= nil then
+        for fontName, font in pairs(customFonts) do
+            self.fonts[fontName] = font
+        end
     end
     self.initialized = true
 end
