@@ -307,8 +307,14 @@ local ansiShadow = {
         }
     }
 }
+----------------------------- UPPER CASE
+for char in string.gmatch("abcdefghijklmnopqrstuvwxyz", ".") do
+    local charUpper = char:gsub(".", string.upper)
+    ansiShadow.characters[charUpper] = ansiShadow.characters[char]
+end
+
 ----------------------------- SPECIAL CHARS
-calvinS.characters["."] = {
+ansiShadow.characters["."] = {
     width = 3,
     lines = {
         "   ",
@@ -319,7 +325,7 @@ calvinS.characters["."] = {
         "╚═╝"
     }
 }
-calvinS.characters[","] = {
+ansiShadow.characters[","] = {
     width = 3,
     lines = {
         "   ",
@@ -330,7 +336,7 @@ calvinS.characters[","] = {
         "╚═╝"
     }
 }
-calvinS.characters["!"] = {
+ansiShadow.characters["!"] = {
     width = 3,
     lines = {
         "██╗",
@@ -341,7 +347,7 @@ calvinS.characters["!"] = {
         "╚═╝"
     }
 }
-calvinS.characters["?"] = {
+ansiShadow.characters["?"] = {
     width = 8,
     lines = {
         "██████╗ ",
@@ -352,7 +358,7 @@ calvinS.characters["?"] = {
         "  ╚═╝   "
     }
 }
-calvinS.characters["$"] = {
+ansiShadow.characters["$"] = {
     width = 8,
     lines = {
         "▄▄███▄▄·",
@@ -363,7 +369,7 @@ calvinS.characters["$"] = {
         "╚═▀▀▀══╝"
     }
 }
-calvinS.characters["%"] = {
+ansiShadow.characters["%"] = {
     width = 7,
     lines = {
         "██╗ ██╗",
@@ -374,7 +380,7 @@ calvinS.characters["%"] = {
         "╚═╝ ╚═╝"
     }
 }
-calvinS.characters["&"] = {
+ansiShadow.characters["&"] = {
     width = 9,
     lines = {
         "   ██╗   ",
@@ -385,7 +391,7 @@ calvinS.characters["&"] = {
         "╚═════╝  "
     }
 }
-calvinS.characters["*"] = {
+ansiShadow.characters["*"] = {
     width = 6,
     lines = {
         "      ",
@@ -396,7 +402,7 @@ calvinS.characters["*"] = {
         "      "
     }
 }
-calvinS.characters["#"] = {
+ansiShadow.characters["#"] = {
     width = 9,
     lines = {
         " ██╗ ██╗ ",
@@ -407,7 +413,7 @@ calvinS.characters["#"] = {
         " ╚═╝ ╚═╝ "
     }
 }
-calvinS.characters["-"] = {
+ansiShadow.characters["-"] = {
     width = 6,
     lines = {
         "      ",
@@ -419,4 +425,4 @@ calvinS.characters["-"] = {
     }
 }
 
-return calvinS
+return ansiShadow
