@@ -34,7 +34,7 @@ function AsciiFont:print(text, fontName)
     end
     local font = fontName ~= nil and self.fonts[fontName] or self.fonts[self.defaultFont]
     if font == nil then
-        return "ERROR: font " .. (fontName and fontName or "default") .. " not found", 50, 1
+        return "ERROR: font not found", 50, 1
     end
     local height = font.height
     local width = 0

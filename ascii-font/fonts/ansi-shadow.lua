@@ -424,5 +424,16 @@ ansiShadow.characters["-"] = {
         "      "
     }
 }
+ansiShadow.characters[" "] = {
+    width = 6,
+    lines = {
+        "      ",
+        "      ",
+        "      ",
+        "      ",
+        "      ",
+        "      "
+    }
+}
 
 return ansiShadow

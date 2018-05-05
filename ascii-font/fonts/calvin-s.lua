@@ -512,5 +512,13 @@ calvinS.characters["-"] = {
         "   "
     }
 }
+calvinS.characters[" "] = {
+    width = 3,
+    lines = {
+        "   ",
+        "   ",
+        "   "
+    }
+}
 
 return calvinS
