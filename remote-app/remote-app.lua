@@ -171,11 +171,11 @@ local remoteAppApi = {
                 if pingArgs[1] ~= "remote" then
                     if remoteAddress == modemAddress and _port == port then
                         print("responding ping from modem")
-                        toModemSender("ping")
+                        toModemSender("pingBack")
                     end
                     if remoteAddress == tunnelAddress then
                         print("responding ping from tunnel")
-                        toModemSender("ping")
+                        toModemSender("pingBack")
                     end
                     return
                 end

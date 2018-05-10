@@ -1,0 +1,7 @@
+{
+  "name": "me-auto-stock",
+  "entryPoint": "me-auto-stock.lua",
+  "files": [
+    "me-auto-stock.lua"
+  ]
+}
