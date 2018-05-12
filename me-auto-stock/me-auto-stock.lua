@@ -71,12 +71,13 @@ function MeAutoStock:autoStock()
 
     for _, minSourceItem in pairs(self.minSourceItems) do
         local currentCount = _getCurrentItemsInNetwork(self, minSourceItem.item)
-        if currentCount < minSourceItem.min then
+        local minSourceItemCount = minSourceItem.min.get()
+        if currentCount < minSourceItemCount then
             print(string.format(
                 "not enough source '%s' for auto stocking '%s' (required %d but was %d)",
                 minSourceItem.item.label,
                 self.targetItem.label,
-                minSourceItem.min,
+                minSourceItemCount,
                 currentCount
             ))
             return
