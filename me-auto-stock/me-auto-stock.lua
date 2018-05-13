@@ -36,7 +36,7 @@ local function _getCurrentItemsInNetwork(self, item)
 end
 local function _getCraftable(self)
     for _, craftable in pairs(self.interface.getCraftables()) do
-        if _itemEquals(self.targetItem, craftable.getItemStack()) then
+        if type(craftable) == "table" and _itemEquals(self.targetItem, craftable.getItemStack()) then
             return craftable
         end
     end
@@ -48,24 +48,28 @@ function MeAutoStock:autoStock()
         if self.currentJob.job.isDone() or self.currentJob.job.isCanceled() then
             self.currentJob = nil
         else
+            --[[
             print(string.format(
                 "already crafting '%s' for %d",
                 self.targetItem.label,
                 os.time() - self.currentJob.startTime
             ))
+            ]]
             return
         end
     end
     local currentSize = _getCurrentItemsInNetwork(self, self.targetItem)
     local stackThreshold = self.autoStockSizeModel.get()
-    local amountToAutoCraft = stackThreshold - currentSize
+    local amountToAutoCraft = math.min(stackThreshold - currentSize, 5)
     if amountToAutoCraft <= 0 then
+        --[[
         print(string.format(
             "enough of '%s' - no need for auto stock (got %d but threshold is %d)",
             self.targetItem.label,
             currentSize,
             stackThreshold
         ))
+        ]]
         return
     end
 
@@ -94,11 +98,22 @@ function MeAutoStock:autoStock()
         job = craftable.request(amountToAutoCraft),
         startTime = os.time()
     }
-    print(string.format(
-        "started auto stock for '%s' (%s items)",
-        self.targetItem.label,
-        amountToAutoCraft
-    ))
+    if self.currentJob.job.isCanceled() then
+        --[[
+        print(string.format(
+            "no free auto crafting slot for '%s' (%s items)",
+            self.targetItem.label,
+            amountToAutoCraft
+        ))
+        ]]
+        self.currentJob = nil
+    else
+        print(string.format(
+            "started auto stock for '%s' (%s items)",
+            self.targetItem.label,
+            amountToAutoCraft
+        ))
+    end
 end
 
 return MeAutoStock
